@@ -12,10 +12,10 @@ app.use(express.json({extended: false}));
 app.get('/', (req, res)=> {res.send('API running')});
 
 //define routes
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/profiles", require("./routes/api/profiles"));
-app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/posts", require("./routes/api/posts"));
+app.use("/api/users", require("./routes/api/usersAPI"));
+app.use("/api/profiles", require("./routes/api/profilesAPI"));
+app.use("/api/auth", require("./routes/api/authAPI"));
+app.use("/api/posts", require("./routes/api/postsAPI"));
 
 
 
