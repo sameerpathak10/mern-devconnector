@@ -46,7 +46,7 @@ import { login } from '../../actions/authAction';
 
 Login.propTypes = {
     login: PropTypes.func.isRequired,
-    isAuthenticated : PropTypes.bool.isRequired
+    isAuthenticated : PropTypes.bool
 };
  const mapStateToProps = state => ({
     isAuthenticated : state.auth.isAuthenticated
