@@ -15,14 +15,13 @@ const initialState = {
     user : null
 }
 
-export default  function(state = initialState, action){
+export default function (state = initialState, action){
     const {type , payload} = action;
 
     switch(type){
         case USER_LOADED:
             return{
                 ...state,
-                token: null,
                 isAuthenticated:true,
                 loading: false,
                 user :payload
@@ -33,6 +32,7 @@ export default  function(state = initialState, action){
             return{
                 ...state,
                 payload,
+                token : payload.token,                
                 isAuthenticated : true,
                 loading :false
             }
@@ -45,9 +45,13 @@ export default  function(state = initialState, action){
                 ...state,
                 token : null,
                 isAuthenticated : false,
-                loading : false
+                loading : false,
+                user:null,
+                payload:null
             }
         default:
             return state;
     }
-}
+};
+
+//export default authReducer;
