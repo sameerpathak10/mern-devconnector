@@ -8,11 +8,18 @@ import Register  from './components/auth/Register';
 import './App.css';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
+import Profile from './components/profile-forms/Profile';
+import EditProfile from './components/profile-forms/EditProfile';
+import Experience from './components/profile-forms/Experience';
+import Education from './components/profile-forms/Education';
+
 //Redux
 import { Provider} from 'react-redux';
 import store from './store';
 import { loadUser } from './actions/authAction';
 import setAuthToken from './utils/setAuthToken';
+import { LOGOUT } from './actions/types';
+
 // const App = () =>{
 //   <Fragment>
 //     <h1>App</h1>d
@@ -23,9 +30,18 @@ if(localStorage.token){
   setAuthToken(localStorage.token);
 }
 
-function App() {
+const App =()=> {
   useEffect(()=>{
+    // check for token in LS
+    if(localStorage.token){
+      setAuthToken(localStorage.token);
+    }
     store.dispatch(loadUser());
+
+    //log user out from all tabs if they log out in one tab
+    window.addEventListener('storage',()=>{
+      if(!localStorage.token) store.dispatch({ type:LOGOUT });
+    });
   },[]);
   return (
     <div className="App">
@@ -40,6 +56,12 @@ function App() {
                 <Route exact path='/register' component={Register} />
                 <Route exact path='/login' component={Login} />
                 <PrivateRoute exact path='/dashboard' component={Dashboard} />
+                <PrivateRoute exact path='/createProfile' component={Profile} />
+                <PrivateRoute exact path='/editProfile' component={EditProfile} />
+                <PrivateRoute exact path="/addExperience" component={Experience} />
+                <PrivateRoute exact path="/addEducation" component={Education} />
+                {/* <PrivateRoute exact path="/posts" component={Posts} />
+                <PrivateRoute exact path="/posts/:id" component={Post} /> */}
               </Switch>             
             </section>
           </Fragment>

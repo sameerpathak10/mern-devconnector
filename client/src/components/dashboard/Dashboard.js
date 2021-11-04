@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import DashboardActions from "./DashboardActions";
 import { getCurrentProfile } from "../../actions/profileAction";
 import Spinner from "../layout/Spinner";
 
@@ -12,20 +13,23 @@ const Dashboard = ({
 }) => {
   useEffect(() => {
     getCurrentProfile();
-  }, []);
+  }, [getCurrentProfile]);
 
-  const profile2 = profile === "undefined" ? null : profile;
+  console.log(profile);
   //return  <Fragment>Test</Fragment>
-  return loading && profile === null ? (
-    <Spinner />
-  ) : (
+  // return loading && profile === null ? (
+  //   <Spinner />
+  // ) :
+  return (
     <Fragment>
       <h1 className="large text-primary">Dashboard</h1>
       <p className="lead">
         <i className="fas fa-user" /> Welcome {user && user.name}
       </p>
-      {profile2 !== null ? (
-        <Fragment>Your Profile</Fragment>
+      {profile !== null ? ( //typeof profile !== "undefined" && 
+        <Fragment>
+          <DashboardActions />
+        </Fragment>
       ) : (
         <Fragment>
           <p>You have not setup a profile, please add some info.</p>
@@ -40,7 +44,7 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   getCurrentProfile: PropTypes.func.isRequired,
-  state: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
   profile: PropTypes.object.isRequired,
 };
 
