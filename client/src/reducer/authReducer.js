@@ -5,7 +5,8 @@ import {
     USER_LOADED,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT
+    LOGOUT,
+    ACCOUNT_DELETED
 } from '../actions/types';
 
 const initialState = {
@@ -15,7 +16,7 @@ const initialState = {
     user : null
 }
 
-export default function (state = initialState, action){
+function authReducer (state = initialState, action){
     const {type , payload} = action;
 
     switch(type){
@@ -25,20 +26,21 @@ export default function (state = initialState, action){
                 isAuthenticated:true,
                 loading: false,
                 user :payload
-            }
+            };
         case REGISTER_SUCCESS:
         case LOGIN_SUCCESS:
-            localStorage.setItem('token',payload.token);
+           // localStorage.setItem('token',payload.token);
             return{
                 ...state,
-                payload,
-                token : payload.token,                
+                ...payload,
+                //token : payload.token,                
                 isAuthenticated : true,
                 loading :false
-            }
+            };
         case LOGIN_FAIL:
         case REGISTER_FAIL:
         case AUTH_ERROR:
+        case ACCOUNT_DELETED:
         case LOGOUT:
             localStorage.removeItem('token');
             return{
@@ -54,4 +56,4 @@ export default function (state = initialState, action){
     }
 };
 
-//export default authReducer;
+export default authReducer;

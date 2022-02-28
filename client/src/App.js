@@ -10,8 +10,8 @@ import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
 import Profile from './components/profile-forms/Profile';
 import EditProfile from './components/profile-forms/EditProfile';
-import Experience from './components/profile-forms/Experience';
-import Education from './components/profile-forms/Education';
+import Experience from './components/profile-forms/AddExperience';
+import Education from './components/profile-forms/AddEducation';
 
 //Redux
 import { Provider} from 'react-redux';
@@ -20,15 +20,6 @@ import { loadUser } from './actions/authAction';
 import setAuthToken from './utils/setAuthToken';
 import { LOGOUT } from './actions/types';
 
-// const App = () =>{
-//   <Fragment>
-//     <h1>App</h1>d
-
-//   </Fragment>
-// }
-if(localStorage.token){
-  setAuthToken(localStorage.token);
-}
 
 const App =()=> {
   useEffect(()=>{

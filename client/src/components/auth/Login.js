@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 //import axios from 'axios';
 import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import { login } from "../../actions/authAction";
+import { login  } from "../../actions/authAction";
 
 const Login = ({ login, isAuthenticated }) => {
   const [formData, setFormData] = useState({
