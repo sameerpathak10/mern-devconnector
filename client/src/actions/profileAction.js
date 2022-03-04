@@ -1,4 +1,3 @@
-//import axios from "axios";
 import api from "../utils/api";
 import {
   GET_PROFILE,
@@ -11,12 +10,7 @@ import {
   NO_REPOS,
 } from "./types";
 import { setAlert } from "./alertAction";
-/*const api = axios.create({
-  baseURL: "/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});*/
+
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     const res = await api.get("/profiles/me");

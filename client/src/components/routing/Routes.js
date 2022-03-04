@@ -5,7 +5,6 @@ import Login from '../auth/Login';
 import Alert from '../layout/Alert';
 import Dashboard from '../dashboard/Dashboard';
 import AddProfile from '../profile-forms/AddProfile';
-import EditProfile from '../profile-forms/EditProfile';
 import AddExperience from '../profile-forms/AddExperience';
 import AddEducation from '../profile-forms/AddEducation';
 import Profiles from '../profiles/Profiles';
@@ -25,13 +24,13 @@ const Routes = (props) => {
         <Route exact path="/profiles" component={Profiles} />
         <Route exact path="/profile/:id" component={Profile} />
         <PrivateRoute exact path="/dashboard" component={Dashboard} />
-        <PrivateRoute exact path="/create-profile" component={AddProfile} />
-        <PrivateRoute exact path="/edit-profile" component={EditProfile} />
-        <PrivateRoute exact path="/add-experience" component={AddExperience} />
-        <PrivateRoute exact path="/add-education" component={AddEducation} />
+        <PrivateRoute exact path="/createProfile" component={AddProfile} />
+        <PrivateRoute exact path="/editProfile" component={AddProfile} />
+        <PrivateRoute exact path="/addExperience" component={AddExperience} />
+        <PrivateRoute exact path="/addEducation" component={AddEducation} />
         <PrivateRoute exact path="/posts" component={Posts} />
         <PrivateRoute exact path="/posts/:id" component={Post} />
-       
+        <Route component={NotFound} />
       </Switch>
     </section>
   );
