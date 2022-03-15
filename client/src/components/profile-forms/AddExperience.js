@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { addExperience } from "../../actions/profileAction";
 
-const Experience = ({ addExperience, history }) => {
+const AddExperience = ({ addExperience, history }) => {
   const [formData, setFormData] = useState({
     company: "",
     title: "",
@@ -111,8 +111,8 @@ const Experience = ({ addExperience, history }) => {
   );
 };
 
-Experience.propTypes = {
+AddExperience.propTypes = {
   addExperience: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addExperience })(Experience);
+export default connect(null, { addExperience })(AddExperience);

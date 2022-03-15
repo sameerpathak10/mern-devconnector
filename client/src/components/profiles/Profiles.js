@@ -12,9 +12,11 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
 
   return (
     <Fragment>
-      {loading ? (
+      {
+      loading ? (
         <Spinner />
-      ) : (
+      ) :
+      (
         <Fragment>
           <h1 className='large text-primary'>Developers</h1>
           <p className='lead'>

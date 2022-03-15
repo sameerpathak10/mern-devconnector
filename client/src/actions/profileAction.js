@@ -177,7 +177,7 @@ export const getProfiles = () => async (dispatch) => {
   dispatch({ type: CLEAR_PROFILE });
 
   try {
-    const res = await api.get('/profile');
+    const res = await api.get('/profiles');
 
     dispatch({
       type: GET_PROFILES,
@@ -192,9 +192,9 @@ export const getProfiles = () => async (dispatch) => {
 };
 
 // Get profile by ID
-export const getProfileById = (userId) => async (dispatch) => {
+export const getProfileById = (id) => async (dispatch) => {
   try {
-    const res = await api.get(`/profile/user/${userId}`);
+    const res = await api.get(`/profiles/user/${id}`);
 
     dispatch({
       type: GET_PROFILE,
@@ -211,7 +211,7 @@ export const getProfileById = (userId) => async (dispatch) => {
 // Get Github repos
 export const getGithubRepos = (username) => async (dispatch) => {
   try {
-    const res = await api.get(`/profile/github/${username}`);
+    const res = await api.get(`/profiles/github/${username}`);
 
     dispatch({
       type: GET_REPOS,
