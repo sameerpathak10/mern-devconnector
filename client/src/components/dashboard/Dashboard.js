@@ -18,7 +18,7 @@ const Dashboard = ({
     getCurrentProfile();
   }, [getCurrentProfile]);
 
-  console.log(profile);
+  //console.log(profile);
   //return  <Fragment>Test</Fragment>
   // return loading && profile === null ? (
   //   <Spinner />
@@ -62,7 +62,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  profile: state.profile,
+  profile: state.profile
 });
 export default connect(mapStateToProps, { getCurrentProfile, deleteAccount })(
   Dashboard

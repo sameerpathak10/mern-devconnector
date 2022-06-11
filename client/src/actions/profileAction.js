@@ -20,6 +20,7 @@ export const getCurrentProfile = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    console.error(err);
     //const errors = err.response.data.errors;
     // if (errors) {
     //   errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
@@ -56,7 +57,7 @@ export const createProfile =
       }
       dispatch({
         type: PROFILE_ERROR,
-        payload: { msg: err.response.statusText, status: err.response.status },
+        payload: { msg: err.response.statusText, status: err.response.status }
       });
     }
   };

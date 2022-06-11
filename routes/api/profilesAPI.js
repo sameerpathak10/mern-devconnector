@@ -7,7 +7,7 @@ const config = require("config");
 const { check, validationResult } = require("express-validator");
 // bring in normalize to give us a proper url, regardless of what user entered
 const normalize = require("normalize-url");
-
+const checkObjectId = require("../../middleware/checkObjectId");
 const Profile = require("../../models/ProfileModel");
 const User = require("../../models/UserModel");
 const auth = require("../../middleware/auth");
@@ -129,6 +129,7 @@ router.get("/", async (req, res) => {
     }
     return res.json(profiles);
   } catch (error) {
+    console.error(err.message);
     return res.status(500).json(`Server Error: ${error.message}`);
   }
 });
@@ -137,9 +138,13 @@ router.get("/", async (req, res) => {
 // @desc    Get profile by user id
 // @access  Public
 
-router.get("/user/:id", async (req, res) => {
+router.get(
+  "/user/:user_id", 
+  checkObjectId('user_id'),
+  async ({ params: { user_id }}, res) => {
   try {
-    const profile = await Profile.findOne({ user: req.params.id }).populate(
+    const profile = await Profile.findOne({ 
+      user: req.params.id }).populate(
       "user",
       ["name", "avatar"]
     );
@@ -147,11 +152,10 @@ router.get("/user/:id", async (req, res) => {
     if (!profile) {
       return res.status(400).json("Profile not found.");
     }
+
     return res.json(profile);
   } catch (error) {
-    if (error.kind == "ObjectId") {
-      return res.status(400).json("Profile not found.");
-    }
+    console.error(err.message);
     return res.status(500).json(`Server Error: ${error.message}`);
   }
 });
@@ -162,11 +166,14 @@ router.get("/user/:id", async (req, res) => {
 
 router.delete("/", auth, async (req, res) => {
   try {
-    //Delete profile
-    await Profile.findOneAndRemove({ user: req.user.id });
-
-    //Delete user
-    await User.findOneAndDelete({ _id: req.user.id });
+    // Remove user posts
+    // Remove profile
+    // Remove user
+    await Promise.all([
+      Post.deleteMany({ user: req.user.id }),
+      Profile.findOneAndRemove({ user: req.user.id }),
+      User.findOneAndRemove({ _id: req.user.id })
+    ]);
 
     return res.json("User and its profile deleted.");
   } catch (error) {
@@ -185,7 +192,9 @@ router.put(
     [
       check("title", "Title is required.").not().isEmpty(),
       check("company", "Company name is required.").not().isEmpty(),
-      check("from", "From date is required.").not().isEmpty(),
+      check('from', 'From date is required and needs to be from the past')
+      .notEmpty()
+      .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
     ],
   ],
   async (req, res) => {
@@ -208,6 +217,7 @@ router.put(
 
       return res.json(profile);
     } catch (error) {
+      console.error(err.message);
       return res.status(500).json(`Server Error: ${error.message}`);
     }
   }
@@ -234,6 +244,7 @@ router.delete("/experience/:experience_id", auth, async (req, res) => {
 
     return res.json(profile);
   } catch (error) {
+    console.error(err.message);
     return res.status(500).json(`Server Error: ${error.message}`);
   }
 });
@@ -250,7 +261,9 @@ router.put(
       check("school", "School is required.").not().isEmpty(),
       check("degree", "Degree is required.").not().isEmpty(),
       check("fieldofstudy", "Field of study is required.").not().isEmpty(),
-      check("from", "From date is required.").not().isEmpty(),
+      check('from', 'From date is required and needs to be from the past')
+      .notEmpty()
+      .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
     ],
   ],
   async (req, res) => {
@@ -282,6 +295,7 @@ router.put(
 
       return res.json(profile);
     } catch (error) {
+      console.error(err.message);
       return res.status(500).json(`Server Error: ${error.message}`);
     }
   }
@@ -337,6 +351,7 @@ router.get("/github/:username", (req, res) => {
       return res.json(JSON.parse(body));
     });
   } catch (error) {
+    console.error(err.message);
     return res.status(500).json(`Server Error: ${error.message}`);
   }
 });

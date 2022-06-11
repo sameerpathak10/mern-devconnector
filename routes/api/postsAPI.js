@@ -10,28 +10,30 @@ const {check, validationResult} = require('express-validator');
 // @desc    Add user post
 // @access  Public
 
-router.post('/',[auth,[
-    check('text','Text is required').not().isEmpty()
-    ]], async(req,res)=> {
+router.post(
+    '/',auth,
+    check('text','Text is required').not().isEmpty(), 
+    async(req,res)=> {
     try{
         const validationErrors = validationResult(req);
         if(!validationErrors.isEmpty()){
             return res.status(400).json({ errors : validationErrors.array()});
         }
         const user = await User.findById(req.user.id).select('-password');
-        const post = new Post({
+        const newPost = new Post({
             text: req.body.text,
             name : user.name,
             avatar : user.avatar,
             user : req.user.id
         });
 
-        await post.save();
+        const post = await newPost.save();
 
         return res.json(post);
 
     }
     catch(error){
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
@@ -46,7 +48,10 @@ router.get('/',auth, async(req,res)=>{
         res.json(posts);
     }
     catch(error){
-        return res.status(500).json(`Server Error: ${error.message}`);
+        console.error(err.message);
+        return res
+            .status(500)
+            .json(`Server Error: ${error.message}`);
     }
 });
 
@@ -64,9 +69,8 @@ router.get('/:postId',auth, async(req,res)=>{
         res.json(post);
     }
     catch(error){
-        if(error.kind == 'ObjectId'){
-            return res.status(404).json('Post not found');
-        }
+        console.error(err.message);
+  
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
@@ -80,9 +84,12 @@ router.delete('/:postId',auth, async(req,res)=>{
     try{
         const post= await Post.findById(req.params.postId);
         
+        if (!post) {
+            return res.status(404).json({ msg: 'Post not found' });
+          }
         //Check user
         if(post.user.toString() == req.user.id){
-            return res.status(404).json('User not authorised');
+            return res.status(401).json('User not authorised');
         }
 
         await post.remove();
@@ -90,20 +97,18 @@ router.delete('/:postId',auth, async(req,res)=>{
         res.json({msg: 'Post removed'});
     }
     catch(error){
-        if(error.kind == 'ObjectId'){
-            return res.status(404).json('Post not found');
-        }
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
 
 
 
-// @route   POST api/posts/like/:postId 
+// @route   PUT api/posts/like/:postId 
 // @desc    Like a post
 // @access  Public
 
-router.post('/like/:postId',auth, async(req,res)=> {
+router.put('/like/:postId',auth, async(req,res)=> {
     try{
        
         const post = await Post.findById(req.params.postId);
@@ -119,16 +124,17 @@ router.post('/like/:postId',auth, async(req,res)=> {
 
     }
     catch(error){
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
 
 
-// @route   POST api/posts/unlike/:id 
+// @route   PUT api/posts/unlike/:id 
 // @desc    Unlike a post
 // @access  Public
 
-router.post('/unlike/:postId',auth, async(req,res)=> {
+router.put('/unlike/:postId',auth, async(req,res)=> {
     try{
        
         const post = await Post.findById(req.params.postId);
@@ -148,6 +154,7 @@ router.post('/unlike/:postId',auth, async(req,res)=> {
 
     }
     catch(error){
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
@@ -157,9 +164,10 @@ router.post('/unlike/:postId',auth, async(req,res)=> {
 // @desc    Add user comment on post
 // @access  Public
 
-router.post('/comment/:postId',[auth,[
-    check('text','Text is required').not().isEmpty()
-    ]], async(req,res)=> {
+router.put('/comment/:postId',
+    auth,
+    check('text','Text is required').not().isEmpty(), 
+    async(req,res)=> {
     try{
         const validationErrors = validationResult(req);
         if(!validationErrors.isEmpty()){
@@ -180,6 +188,7 @@ router.post('/comment/:postId',[auth,[
 
     }
     catch(error){
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });
@@ -221,6 +230,7 @@ router.post('/:postId/comment/:commentId',auth, async(req,res)=> {
 
     }
     catch(error){
+        console.error(err.message);
         return res.status(500).json(`Server Error: ${error.message}`);
     }
 });

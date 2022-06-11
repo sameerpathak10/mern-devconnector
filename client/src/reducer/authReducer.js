@@ -50,7 +50,7 @@ function authReducer (state = initialState, action){
                 loading : false,
                 user:null,
                 payload:null
-            }
+            };
         default:
             return state;
     }
