@@ -139,25 +139,25 @@ router.get("/", async (req, res) => {
 // @access  Public
 
 router.get(
-  "/user/:user_id", 
+  '/user/:user_id',
   checkObjectId('user_id'),
-  async ({ params: { user_id }}, res) => {
-  try {
-    const profile = await Profile.findOne({ 
-      user: req.params.id }).populate(
-      "user",
-      ["name", "avatar"]
-    );
+  async ({ params: { user_id } }, res) => {
+    
+    try {
+      const profile = await Profile.findOne({
+        user: user_id
+      }).populate('user', ['name', 'avatar']);
 
-    if (!profile) {
-      return res.status(400).json("Profile not found.");
+      if (!profile) {
+        return res.status(400).json("Profile not found.");
+      }
+
+      return res.json(profile);
+    } 
+    catch (error) {
+      console.error(error.message);
+      return res.status(500).json(`Server Error: ${error.message}`);
     }
-
-    return res.json(profile);
-  } catch (error) {
-    console.error(err.message);
-    return res.status(500).json(`Server Error: ${error.message}`);
-  }
 });
 
 // @route   DELETE api/profiles

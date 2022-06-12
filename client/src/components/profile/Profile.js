@@ -12,16 +12,16 @@ import { getProfileById } from '../../actions/profileAction';
 
 const Profile = ({ getProfileById, profile: { profile }, auth, match }) => {
   try{
-    debugger
+    //debugger
     useEffect(() => {
       getProfileById(match.params.id);
     }, [getProfileById, match.params.id]);
-
+    console.log(profile);
     return (
       <Fragment>
-        {profile === null ? (
-          <Spinner />
-        ) : (
+        {
+          /* profile === null ? (  <Spinner />  ) : */
+        (
           <Fragment>
             <Link to="/profiles" className="btn btn-light">
               Back To Profiles
@@ -73,7 +73,8 @@ const Profile = ({ getProfileById, profile: { profile }, auth, match }) => {
               )}
             </div>
           </Fragment>
-        )}
+        )
+        }
       </Fragment>
     );
   }

@@ -9,26 +9,33 @@ import CommentItem from '../post/CommentItem';
 import { getPost } from '../../actions/postAction';
 
 const Post = ({ getPost, post: { post, loading }, match }) => {
-  useEffect(() => {
-    getPost(match.params.id);
-  }, [getPost, match.params.id]);
-
-  return loading || post === null ? (
-    <Spinner />
-  ) : (
-    <Fragment>
-      <Link to="/posts" className="btn">
-        Back To Posts
-      </Link>
-      <PostItem post={post} showActions={false} />
-      <CommentForm postId={post._id} />
-      <div className="comments">
-        {post.comments.map((comment) => (
-          <CommentItem key={comment._id} comment={comment} postId={post._id} />
-        ))}
-      </div>
-    </Fragment>
-  );
+  try{
+    useEffect(() => {
+      getPost(match.params.id);
+    }, [getPost, match.params.id]);
+    console.log(post);
+    return (
+      /*loading || post === null ? ( <Spinner /> ) : */
+      (
+        <Fragment>
+          <Link to="/posts" className="btn">
+            Back To Posts
+          </Link>
+          <PostItem post={post} showActions={false} />
+          <CommentForm postId={post._id} />
+          <div className="comments">
+            {post.comments.map((comment) => (
+              <CommentItem key={comment._id} comment={comment} postId={post._id} />
+            ))}
+          </div>
+        </Fragment>
+      )
+    );
+  }
+  catch(err){
+    console.error(err);
+    return( <div><h2>Error while fetching comment</h2></div>);
+  }
 };
 
 Post.propTypes = {

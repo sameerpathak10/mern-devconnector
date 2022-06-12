@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../../middleware/auth');
+const checkObjectId = require("../../middleware/checkObjectId");
 const Profile = require('../../models/ProfileModel');
 const User = require('../../models/UserModel');
 const Post = require('../../models/PostModel');
@@ -164,8 +165,9 @@ router.put('/unlike/:postId',auth, async(req,res)=> {
 // @desc    Add user comment on post
 // @access  Public
 
-router.put('/comment/:postId',
+router.post('/comment/:postId',
     auth,
+    checkObjectId('postId'),
     check('text','Text is required').not().isEmpty(), 
     async(req,res)=> {
     try{
@@ -198,7 +200,7 @@ router.put('/comment/:postId',
 // @desc    Add user comment on post
 // @access  Public
 
-router.post('/:postId/comment/:commentId',auth, async(req,res)=> {
+router.delete('/:postId/comment/:commentId',auth, async(req,res)=> {
     try{
         //Get Post
         const post = await Post.findById(req.params.postId);

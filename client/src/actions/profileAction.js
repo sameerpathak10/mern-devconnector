@@ -56,6 +56,7 @@ export const getProfiles = () => async (dispatch) => {
 // Get profile by ID
 export const getProfileById = (id) => async (dispatch) => {
   try {
+    //debugger
     const res = await api.get(`/profiles/user/${id}`);
 
     dispatch({
@@ -63,6 +64,7 @@ export const getProfileById = (id) => async (dispatch) => {
       payload: res.data
     });
   } catch (err) {
+    console.error(err.message);
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
