@@ -6,10 +6,11 @@ import ProfileItem from './ProfileItem';
 import { getProfiles } from '../../actions/profileAction';
 
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
+  
   useEffect(() => {
     getProfiles();
   }, [getProfiles]);
-
+ // console.log(profiles);
   return (
     <Fragment>
       {
@@ -25,7 +26,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
           </p>
           <div className='profiles'>
             {profiles.length > 0 ? (
-              profiles.map(profile => (
+               profiles.map(profile => (
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (

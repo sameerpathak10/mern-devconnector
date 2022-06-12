@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { logout } from "../../actions/authAction";
 import { Fragment } from "react";
 
-const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
+const Navbar = ({ auth: { isAuthenticated }, logout }) => {
   const authLinks = (
     <ul>
       <li>
@@ -53,7 +53,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   );
 };
 
-Navbar.protoType = {
+Navbar.protoTypes = {
   logout: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
 };

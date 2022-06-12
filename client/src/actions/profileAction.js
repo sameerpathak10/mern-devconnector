@@ -32,6 +32,44 @@ export const getCurrentProfile = () => async (dispatch) => {
   }
 };
 
+// Get all profiles
+export const getProfiles = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await api.get('/profiles');
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+  } 
+  catch (err) {
+    console.error(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: "err.response.statusText", status: "err.response.status" }
+    });
+  }
+};
+
+// Get profile by ID
+export const getProfileById = (id) => async (dispatch) => {
+  try {
+    const res = await api.get(`/profiles/user/${id}`);
+
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
+};
+
 // Create or update profile
 export const createProfile =
   (formData, history, edit = false) =>
@@ -173,42 +211,6 @@ export const deleteAccount = () => async (dispatch) => {
   }
 };
 
-// Get all profiles
-export const getProfiles = () => async (dispatch) => {
-  dispatch({ type: CLEAR_PROFILE });
-
-  try {
-    const res = await api.get('/profiles');
-
-    dispatch({
-      type: GET_PROFILES,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
-// Get profile by ID
-export const getProfileById = (id) => async (dispatch) => {
-  try {
-    const res = await api.get(`/profiles/user/${id}`);
-
-    dispatch({
-      type: GET_PROFILE,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
 // Get Github repos
 export const getGithubRepos = (username) => async (dispatch) => {
   try {
@@ -219,6 +221,7 @@ export const getGithubRepos = (username) => async (dispatch) => {
       payload: res.data
     });
   } catch (err) {
+    console.error(err);
     dispatch({
       type: NO_REPOS
     });
