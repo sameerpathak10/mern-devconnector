@@ -2,16 +2,15 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-const ProfileItem = ({  profile:  profile2  }) => {
-
-  try{
-    const {
-      user: { _id, name, avatar },
-      status,
-      company,
-      location,
-      skills
-    } = profile2;
+const ProfileItem = ({  
+  profile: {
+    user: { _id, name, avatar },
+    status,
+    company,
+    location,
+    skills
+  }  
+}) => {
 
     return (
       <div className='profile bg-light'>
@@ -35,15 +34,6 @@ const ProfileItem = ({  profile:  profile2  }) => {
         </ul>
       </div>
     );
-  }
-  catch(err){
-    console.error(err);
-    return (
-      <div>
-        <h2>Error while fetching data</h2>
-      </div>
-    )
-  }
 };
 
 ProfileItem.propTypes = {

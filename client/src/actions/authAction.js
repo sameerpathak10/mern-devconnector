@@ -33,8 +33,9 @@ export const loadUser = () => async (dispatch) => {
 
 //Register User
 export const register = formData => async (dispatch) => {
-  //const body = JSON.stringify({ name, email, password });
+  
   try {
+    
     const res = await api.post("/users", formData);
 
     dispatch({

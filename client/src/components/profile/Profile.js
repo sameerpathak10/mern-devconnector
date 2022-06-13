@@ -20,7 +20,7 @@ const Profile = ({ getProfileById, profile: { profile }, auth, match }) => {
     return (
       <Fragment>
         {
-          /* profile === null ? (  <Spinner />  ) : */
+           profile === null ? (  <Spinner />  ) : 
         (
           <Fragment>
             <Link to="/profiles" className="btn btn-light">

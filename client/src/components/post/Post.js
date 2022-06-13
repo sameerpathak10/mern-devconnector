@@ -9,13 +9,13 @@ import CommentItem from '../post/CommentItem';
 import { getPost } from '../../actions/postAction';
 
 const Post = ({ getPost, post: { post, loading }, match }) => {
-  try{
+
     useEffect(() => {
       getPost(match.params.id);
     }, [getPost, match.params.id]);
-    console.log(post);
+   
     return (
-      /*loading || post === null ? ( <Spinner /> ) : */
+      loading || post === null ? ( <Spinner /> ) : 
       (
         <Fragment>
           <Link to="/posts" className="btn">
@@ -31,11 +31,6 @@ const Post = ({ getPost, post: { post, loading }, match }) => {
         </Fragment>
       )
     );
-  }
-  catch(err){
-    console.error(err);
-    return( <div><h2>Error while fetching comment</h2></div>);
-  }
 };
 
 Post.propTypes = {
