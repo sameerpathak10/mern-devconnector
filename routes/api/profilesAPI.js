@@ -6,7 +6,7 @@ const config = require("config");
 
 const { check, validationResult } = require("express-validator");
 // bring in normalize to give us a proper url, regardless of what user entered
-const normalize = require("normalize-url");
+//const normalize = require("normalize-url");
 const checkObjectId = require("../../middleware/checkObjectId");
 const Profile = require("../../models/ProfileModel");
 const User = require("../../models/UserModel");
@@ -109,10 +109,10 @@ router.post(
       await profile.save();
 
       return res.json(profile);
-    }catch (err) {
-        console.error(err.message);
-        res.status(500).send("Server Error");
-      }
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server Error");
+    }
   }
 );
 
@@ -139,26 +139,25 @@ router.get("/", async (req, res) => {
 // @access  Public
 
 router.get(
-  '/user/:user_id',
-  checkObjectId('user_id'),
+  "/user/:user_id",
+  checkObjectId("user_id"),
   async ({ params: { user_id } }, res) => {
-    
     try {
       const profile = await Profile.findOne({
-        user: user_id
-      }).populate('user', ['name', 'avatar']);
+        user: user_id,
+      }).populate("user", ["name", "avatar"]);
 
       if (!profile) {
         return res.status(400).json("Profile not found.");
       }
 
       return res.json(profile);
-    } 
-    catch (error) {
+    } catch (error) {
       console.error(error.message);
       return res.status(500).json(`Server Error: ${error.message}`);
     }
-});
+  }
+);
 
 // @route   DELETE api/profiles
 // @desc    Delete profile,user and post
@@ -172,7 +171,7 @@ router.delete("/", auth, async (req, res) => {
     await Promise.all([
       Post.deleteMany({ user: req.user.id }),
       Profile.findOneAndRemove({ user: req.user.id }),
-      User.findOneAndRemove({ _id: req.user.id })
+      User.findOneAndRemove({ _id: req.user.id }),
     ]);
 
     return res.json("User and its profile deleted.");
@@ -192,9 +191,9 @@ router.put(
     [
       check("title", "Title is required.").not().isEmpty(),
       check("company", "Company name is required.").not().isEmpty(),
-      check('from', 'From date is required and needs to be from the past')
-      .notEmpty()
-      .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+      check("from", "From date is required and needs to be from the past")
+        .notEmpty()
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
     ],
   ],
   async (req, res) => {
@@ -261,9 +260,9 @@ router.put(
       check("school", "School is required.").not().isEmpty(),
       check("degree", "Degree is required.").not().isEmpty(),
       check("fieldofstudy", "Field of study is required.").not().isEmpty(),
-      check('from', 'From date is required and needs to be from the past')
-      .notEmpty()
-      .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+      check("from", "From date is required and needs to be from the past")
+        .notEmpty()
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
     ],
   ],
   async (req, res) => {
