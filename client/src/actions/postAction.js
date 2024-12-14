@@ -100,7 +100,7 @@ export const addPost = formData => async dispatch => {
   }
 };
 
-// Get post
+// Get post by id
 export const getPost = id => async dispatch => {
   try {
     const res = await api.get(`/posts/${id}`);
@@ -129,6 +129,7 @@ export const addComment = (postId, formData) => async dispatch => {
 
     dispatch(setAlert('Comment Added', 'success'));
   } catch (err) {
+    console.error(err);
     dispatch({
       type: POST_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
@@ -139,7 +140,7 @@ export const addComment = (postId, formData) => async dispatch => {
 // Delete comment
 export const deleteComment = (postId, commentId) => async dispatch => {
   try {
-    await api.delete(`/posts/comment/${postId}/${commentId}`);
+    await api.delete(`/posts/${postId}/comment/${commentId}`);
 
     dispatch({
       type: REMOVE_COMMENT,
@@ -148,6 +149,7 @@ export const deleteComment = (postId, commentId) => async dispatch => {
 
     dispatch(setAlert('Comment Removed', 'success'));
   } catch (err) {
+    console.error(err);
     dispatch({
       type: POST_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status }
