@@ -1,23 +1,23 @@
-import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { addExperience } from '../../actions/profileAction';
+import React, { Fragment, useState } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addExperience } from "../../actions/profileAction";
 
-const Experience = ({ addExperience, history }) => {
+const AddExperience = ({ addExperience, history }) => {
   const [formData, setFormData] = useState({
-    company: '',
-    title: '',
-    location: '',
-    from: '',
-    to: '',
+    company: "",
+    title: "",
+    location: "",
+    from: "",
+    to: "",
     current: false,
-    description: ''
+    description: "",
   });
 
   const { company, title, location, from, to, current, description } = formData;
 
-  const onChange = e =>
+  const onChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
@@ -30,7 +30,7 @@ const Experience = ({ addExperience, history }) => {
       <small>* = required field</small>
       <form
         className="form"
-        onSubmit={e => {
+        onSubmit={(e) => {
           e.preventDefault();
           addExperience(formData, history);
         }}
@@ -78,7 +78,7 @@ const Experience = ({ addExperience, history }) => {
               onChange={() => {
                 setFormData({ ...formData, current: !current });
               }}
-            />{' '}
+            />{" "}
             Current Job
           </p>
         </div>
@@ -111,8 +111,8 @@ const Experience = ({ addExperience, history }) => {
   );
 };
 
-Experience.propTypes = {
-  addExperience: PropTypes.func.isRequired
+AddExperience.propTypes = {
+  addExperience: PropTypes.func.isRequired,
 };
 
-export default connect(null, { addExperience })(Experience);
+export default connect(null, { addExperience })(AddExperience);

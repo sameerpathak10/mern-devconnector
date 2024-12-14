@@ -6,15 +6,16 @@ import ProfileItem from './ProfileItem';
 import { getProfiles } from '../../actions/profileAction';
 
 const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
-  useEffect(() => {
-    getProfiles();
-  }, [getProfiles]);
-
+  
+  useEffect(() => { getProfiles(); }, [getProfiles]);
+ 
   return (
     <Fragment>
-      {loading ? (
+      {
+      loading ? (
         <Spinner />
-      ) : (
+      ) :
+      (
         <Fragment>
           <h1 className='large text-primary'>Developers</h1>
           <p className='lead'>
@@ -23,7 +24,7 @@ const Profiles = ({ getProfiles, profile: { profiles, loading } }) => {
           </p>
           <div className='profiles'>
             {profiles.length > 0 ? (
-              profiles.map(profile => (
+               profiles.map(profile => (
                 <ProfileItem key={profile._id} profile={profile} />
               ))
             ) : (

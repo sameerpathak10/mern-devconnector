@@ -10,15 +10,13 @@ import {
   LOGOUT,
   CLEAR_PROFILE,
 } from "./types";
-import setAuthToken from "../utils/setAuthToken";
+
 
 
 //Load User
 
 export const loadUser = () => async (dispatch) => {
- /* if (localStorage.token) {
-    setAuthToken(localStorage.token);
-  }*/
+
   try {
     const res = await api.get("/auth");
     dispatch({
@@ -35,8 +33,9 @@ export const loadUser = () => async (dispatch) => {
 
 //Register User
 export const register = formData => async (dispatch) => {
-  //const body = JSON.stringify({ name, email, password });
+  
   try {
+    
     const res = await api.post("/users", formData);
 
     dispatch({

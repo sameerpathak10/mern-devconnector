@@ -1,4 +1,3 @@
-//import axios from "axios";
 import api from "../utils/api";
 import {
   GET_PROFILE,
@@ -11,12 +10,7 @@ import {
   NO_REPOS,
 } from "./types";
 import { setAlert } from "./alertAction";
-/*const api = axios.create({
-  baseURL: "/api",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});*/
+
 export const getCurrentProfile = () => async (dispatch) => {
   try {
     const res = await api.get("/profiles/me");
@@ -26,6 +20,7 @@ export const getCurrentProfile = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    console.error(err);
     //const errors = err.response.data.errors;
     // if (errors) {
     //   errors.forEach((error) => dispatch(setAlert(error.msg, "danger")));
@@ -33,6 +28,46 @@ export const getCurrentProfile = () => async (dispatch) => {
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+// Get all profiles
+export const getProfiles = () => async (dispatch) => {
+  dispatch({ type: CLEAR_PROFILE });
+
+  try {
+    const res = await api.get('/profiles');
+
+    dispatch({
+      type: GET_PROFILES,
+      payload: res.data
+    });
+  } 
+  catch (err) {
+    console.error(err);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: "err.response.statusText", status: "err.response.status" }
+    });
+  }
+};
+
+// Get profile by ID
+export const getProfileById = (id) => async (dispatch) => {
+  try {
+    //debugger
+    const res = await api.get(`/profiles/user/${id}`);
+
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data
+    });
+  } catch (err) {
+    console.error(err.message);
+    dispatch({
+      type: PROFILE_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
     });
   }
 };
@@ -62,7 +97,7 @@ export const createProfile =
       }
       dispatch({
         type: PROFILE_ERROR,
-        payload: { msg: err.response.statusText, status: err.response.status },
+        payload: { msg: err.response.statusText, status: err.response.status }
       });
     }
   };
@@ -178,52 +213,17 @@ export const deleteAccount = () => async (dispatch) => {
   }
 };
 
-// Get all profiles
-export const getProfiles = () => async (dispatch) => {
-  dispatch({ type: CLEAR_PROFILE });
-
-  try {
-    const res = await api.get('/profile');
-
-    dispatch({
-      type: GET_PROFILES,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
-// Get profile by ID
-export const getProfileById = (userId) => async (dispatch) => {
-  try {
-    const res = await api.get(`/profile/user/${userId}`);
-
-    dispatch({
-      type: GET_PROFILE,
-      payload: res.data
-    });
-  } catch (err) {
-    dispatch({
-      type: PROFILE_ERROR,
-      payload: { msg: err.response.statusText, status: err.response.status }
-    });
-  }
-};
-
 // Get Github repos
 export const getGithubRepos = (username) => async (dispatch) => {
   try {
-    const res = await api.get(`/profile/github/${username}`);
+    const res = await api.get(`/profiles/github/${username}`);
 
     dispatch({
       type: GET_REPOS,
       payload: res.data
     });
   } catch (err) {
+    console.error(err);
     dispatch({
       type: NO_REPOS
     });
